@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+    nginx:
+        image: nginx:latest
+        volumes:
+            - ./:/var/www
+            - ./_docker/nginx/conf.d/:/etc/nginx/conf.d
+        ports:
+            - "8822:80"
+        container_name: task_tracker_nginx
+        depends_on:
+            - app
+    app:
+        build:
+            context: .
+            dockerfile: _docker/app/Dockerfile
+        volumes:
+            - ./:/var/www/
+        container_name: task_tracker_app
+        depends_on:
+            - db
+    db:
+        image: postgres:latest
+        restart: always
+        environment:
+            POSTGRES_DB: '${DB_DATABASE}'
+            POSTGRES_USER: '${DB_USERNAME}'
+            POSTGRES_PASSWORD: '${DB_PASSWORD}'
+        volumes:
+            - pgdata:/var/lib/postgresql/data
+        ports:
+            - 5433:5432
+        container_name: task_tracker_db
+volumes:
+    pgdata:
