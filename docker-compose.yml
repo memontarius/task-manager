@@ -32,5 +32,15 @@ services:
         ports:
             - 5433:5432
         container_name: task_tracker_db
+    db_testing:
+        image: postgres:latest
+        restart: always
+        environment:
+            POSTGRES_DB: '${DB_DATABASE}'
+            POSTGRES_USER: '${DB_USERNAME}'
+            POSTGRES_PASSWORD: '${DB_PASSWORD}'
+        ports:
+            - 5434:5432
+        container_name: task_tracker_db_testing
 volumes:
     pgdata:

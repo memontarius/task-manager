@@ -14,7 +14,9 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: ['RobotoCondensed', 'sans-serif'],
+                serif: ['Mulish', 'serif'],
+                display: ['Mulish', 'serif']
             },
         },
     },

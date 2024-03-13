@@ -12,12 +12,17 @@ const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 createInertiaApp({
     title: (title) => {
-        const localizedAppName = isLoaded(getActiveLanguage()) ? ` - ${trans(appName)}` : '';
+        const localizedAppName = ` - ${trans(appName)}`;
         return `${title}` + localizedAppName;
     },
     resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue')),
     setup({ el, App, props, plugin }){
-        return createApp({ render: () => h(App, props) })
+
+        const app = createApp({
+            render: () => h(App, props)
+        });
+
+        app
             .use(plugin)
             .use(ZiggyVue, Ziggy)
             .use(i18nVue, {
@@ -27,6 +32,8 @@ createInertiaApp({
                 }
             })
             .mount(el);
+
+        return app;
     },
     progress: {
         color: '#4B5563',

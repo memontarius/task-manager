@@ -1,0 +1,38 @@
+/* Mulish */
+@font-face {
+    font-family: "Mulish";
+    src: url("../fonts/Mulish/Mulish-Regular.ttf");
+    font-weight: normal;
+}
+@font-face {
+    font-family: "Mulish";
+    src: url("../fonts/Mulish/Mulish-Medium.ttf");
+    font-weight: 500;
+}
+@font-face {
+    font-family: "Mulish";
+    src: url("../fonts/Mulish/Mulish-Bold.ttf");
+    font-weight: bold;
+}
+@font-face {
+    font-family: "Mulish";
+    src: url("../fonts/Mulish/Mulish-ExtraBold.ttf");
+    font-weight: 800;
+}
+
+/* RobotoCondensed */
+@font-face {
+    font-family: "RobotoCondensed";
+    src: url("../fonts/RobotoCondensed/RobotoCondensed-Medium.ttf");
+    font-weight: normal;
+}
+@font-face {
+    font-family: "RobotoCondensed";
+    src: url("../fonts/RobotoCondensed/RobotoCondensed-Medium.ttf");
+    font-weight: 500;
+}
+@font-face {
+    font-family: "RobotoCondensed";
+    src: url("../fonts/RobotoCondensed/RobotoCondensed-Bold.ttf");
+    font-weight: bold;
+}
