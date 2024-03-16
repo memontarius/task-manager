@@ -23,11 +23,20 @@ test:
 	make config-clr
 	php artisan test
 
-to-app:
-	docker exec -it task_tracker_app bash
+cname=task_tracker_app
+in:
+	docker exec -it $(cname) bash
+
+c=DatabaseSeeder
+seed:
+	php artisan db:seed --class=$(c)
+
 
 c-mig:
-	docker exec task_tracker_app make mig
+	docker exec $(cname) make mig
 
 c-test:
-	docker exec task_tracker_app make test
+	docker exec $(cname) make test
+
+c-seed:
+	docker exec $(cname) make seed c=$(c)

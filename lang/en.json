@@ -6,5 +6,8 @@
     "Log Out": "Log Out",
     "Tasks": "Tasks",
     "Statuses": "Statuses",
-    "Tags": "Tags"
+    "Tags": "Tags",
+    "Create status": "Create status",
+    "New status": "New status",
+    "New status created successfully!": "New status created successfully!"
 }

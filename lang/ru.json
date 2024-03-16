@@ -6,5 +6,8 @@
     "Log Out": "Выйти",
     "Tasks": "Задачи",
     "Statuses": "Статусы",
-    "Tags": "Метки"
+    "Tags": "Метки",
+    "Create status": "Создать статус",
+    "New status": "Новый статус",
+    "New status created successfully!": "Новый статус успешно создан!"
 }

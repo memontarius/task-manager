@@ -35,7 +35,6 @@ const form = useForm({
         <form @submit.prevent="form.patch(route('profile.update'))" class="mt-6 space-y-6">
             <div>
                 <InputLabel for="name" value="Name" />
-
                 <TextInput
                     id="name"
                     type="text"
@@ -45,8 +44,6 @@ const form = useForm({
                     autofocus
                     autocomplete="name"
                 />
-
-                <InputError class="mt-2" :message="form.errors.name" />
             </div>
 
             <div>

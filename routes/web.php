@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TaskStatusController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -27,16 +28,20 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
-/*
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-*/
+Route::get('/task_statuses', [TaskStatusController::class, 'index'])->name('statuses');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::prefix('task_statuses')->group(function () {
+        Route::get('/create', [TaskStatusController::class, 'create'])->name('statuses.create');
+        Route::post('/create', [TaskStatusController::class, 'store'])->name('statuses.store');
+        Route::get('/{id}/edit', [TaskStatusController::class, 'edit'])->name('statuses.edit');
+        Route::get('/{id}', [TaskStatusController::class, 'show'])->name('statuses.show');
+        Route::patch('/{id}', [TaskStatusController::class, 'update'])->name('statuses.update');
+    });
 });
 
 require __DIR__.'/auth.php';
