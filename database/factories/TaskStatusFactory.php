@@ -9,6 +9,15 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class TaskStatusFactory extends Factory
 {
+    private array $statuses = [
+        'новый',
+        'в работе',
+        'на тестировании',
+        'завершен'
+    ];
+
+    private static int $callCount = 0;
+
     /**
      * Define the model's default state.
      *
@@ -16,8 +25,12 @@ class TaskStatusFactory extends Factory
      */
     public function definition(): array
     {
+        self::$callCount++;
+
         return [
-            'name' => fake()->unique()->realTextBetween(5,12)
+            'name' => self::$callCount <= count($this->statuses)
+                ? $this->statuses[self::$callCount - 1]
+                : fake()->unique()->realTextBetween(5,12),
         ];
     }
 }

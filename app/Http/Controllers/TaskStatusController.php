@@ -79,7 +79,7 @@ class TaskStatusController extends Controller
         $status = TaskStatus::findOrFail($id);
         $status->delete();
 
-        return redirect()->route('statuses')
+        return redirect()->route('statuses.index')
             ->with('message', [__('Status updated successfully')]);
     }
 }

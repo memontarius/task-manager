@@ -16,7 +16,7 @@ class TaskStatusSeeder extends Seeder
         DB::table('task_statuses')->truncate();
 
         TaskStatus::factory()
-            ->count(10)
+            ->count(4)
             ->create();
     }
 }

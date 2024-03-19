@@ -31,7 +31,6 @@ c=DatabaseSeeder
 seed:
 	php artisan db:seed --class=$(c)
 
-
 c-mig:
 	docker exec $(cname) make mig
 
