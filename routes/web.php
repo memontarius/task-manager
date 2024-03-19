@@ -40,7 +40,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/create', [TaskStatusController::class, 'store'])->name('statuses.store');
         Route::get('/{id}/edit', [TaskStatusController::class, 'edit'])->name('statuses.edit');
         Route::get('/{id}', [TaskStatusController::class, 'show'])->name('statuses.show');
-        Route::patch('/{id}', [TaskStatusController::class, 'update'])->name('statuses.update');
+        Route::put('/{id}', [TaskStatusController::class, 'update'])->name('statuses.update');
         Route::delete('/{id}', [TaskStatusController::class, 'destroy'])->name('statuses.destroy');
     });
 });

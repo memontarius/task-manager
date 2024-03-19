@@ -59,7 +59,7 @@ const form = useForm({
 
 function submit() {
     if (form.name !== props.status.name) {
-        form.patch(route('statuses.update', {'id': props.status.id}), {
+        form.put(route('statuses.update', {'id': props.status.id}), {
             onSuccess: () => {
                 if (usePage().props.flash.message) {
                     usePage().props.flash.message.forEach(n => showFlashMessage(n));

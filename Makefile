@@ -23,6 +23,11 @@ test:
 	make config-clr
 	php artisan test
 
+cls=
+testc:
+	make config-clr
+	php artisan test --filter $(cls)
+
 cname=task_tracker_app
 in:
 	docker exec -it $(cname) bash
@@ -36,6 +41,9 @@ c-mig:
 
 c-test:
 	docker exec $(cname) make test
+
+c-testc:
+	docker exec $(cname) make testc cls=$(cls)
 
 c-seed:
 	docker exec $(cname) make seed c=$(c)
