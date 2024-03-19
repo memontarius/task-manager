@@ -9,5 +9,7 @@
     "Tags": "Метки",
     "Create status": "Создать статус",
     "New status": "Новый статус",
-    "New status created successfully!": "Новый статус успешно создан!"
+    "New status created successfully": "Новый статус успешно создан!",
+    "Status updated successfully": "Статус успешно обновлён!",
+    "Edit status": "Редактировать статус"
 }

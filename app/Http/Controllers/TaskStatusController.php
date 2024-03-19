@@ -12,11 +12,17 @@ use Inertia\Response;
 
 class TaskStatusController extends Controller
 {
+    private readonly string $table;
+
+    public function __construct()
+    {
+        $this->table = TaskStatus::getTableName();
+    }
+
     public function index(): Response
     {
-        $statuses = TaskStatus::all();
-
-        return Inertia::render('Statuses', [
+        $statuses = TaskStatus::all()->sortBy('id');
+        return Inertia::render('Statuses/Index', [
             'statuses' => TaskStatusResource::collection($statuses)
         ]);
     }
@@ -28,34 +34,52 @@ class TaskStatusController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        $table = TaskStatus::getTableName();
-
         $data = $request->validate([
-            'name' => ['required', 'min:3', "unique:{$table}"]
+            'name' => ['required', 'min:3', "unique:{$this->table}"]
         ]);
 
         TaskStatus::create($data);
-        return Redirect::route('statuses.create')->with('message', ['New status created successfully']);
+
+        return Redirect::back()
+            ->with('message', [__('New status created successfully')]);
     }
 
     public function edit(string $id): Response
     {
-        echo static::class . " edit";
-        die();
-        return 'edit';
+        $status = TaskStatus::findOrFail($id);
+
+        return Inertia::render('Statuses/Edit', [
+            'status' => $status
+        ]);
     }
 
     public function show(string $id): Response
     {
-        echo static::class . " show";
-        die();
-        return 'edit';
+        $status = TaskStatus::findOrFail($id);
+
+        return Inertia::render('Statuses/Show', [
+            'status' => $status
+        ]);
     }
 
-    public function update(string $id): Response
+    public function update(Request $request, string $id): RedirectResponse
     {
-        echo static::class . " update";
-        die();
-        return 'update';
+        $data = $request->validate([
+            'name' => ['required', 'min:3', "unique:{$this->table}"]
+        ]);
+
+        TaskStatus::where('id', $id)->update($data);
+
+        return Redirect::back()
+            ->with('message', [__('Status updated successfully')]);
+    }
+
+    public function destroy(string $id): RedirectResponse
+    {
+        $status = TaskStatus::findOrFail($id);
+        $status->delete();
+
+        return redirect()->route('statuses')
+            ->with('message', [__('Status updated successfully')]);
     }
 }

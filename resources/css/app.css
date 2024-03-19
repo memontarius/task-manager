@@ -1,4 +1,6 @@
 @import "fonts.css";
+@import "flash-messages.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+

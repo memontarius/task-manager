@@ -31,7 +31,7 @@ const showingNavigationDropdown = ref(false);
                         <NavLink :href="route('home')" :active="route().current('none')">
                             {{ $t('Tasks') }}
                         </NavLink>
-                        <NavLink :href="route('statuses')" :active="route().current('statuses')">
+                        <NavLink :href="route('statuses.index')" :active="route().current('statuses.index')">
                             {{ $t('Statuses') }}
                         </NavLink>
                         <NavLink :href="route('home')" :active="route().current('none')">
@@ -132,7 +132,7 @@ const showingNavigationDropdown = ref(false);
                     <ResponsiveNavLink :href="route('home')" :active="route().current('tasks')">
                         {{ $t('Tasks') }}
                     </ResponsiveNavLink>
-                    <ResponsiveNavLink :href="route('statuses')" :active="route().current('statuses')">
+                    <ResponsiveNavLink :href="route('statuses.index')" :active="route().current('statuses.index')">
                         {{ $t('Statuses') }}
                     </ResponsiveNavLink>
                     <ResponsiveNavLink :href="route('home')" :active="route().current('marks')">

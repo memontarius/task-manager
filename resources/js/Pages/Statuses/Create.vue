@@ -42,23 +42,13 @@ import {Head, useForm, usePage} from "@inertiajs/vue3";
 import InputError from "@/Components/InputError.vue";
 import FlashMessage from "@/Components/FlashMessage.vue";
 import {reactive, ref} from "vue";
+import useFlashMessages from "@/Hooks/useFlashMessages";
 
-const flashMessages = reactive([]);
+const { messages: flashMessages, show: showFlashMessage } = useFlashMessages();
 
 const form = useForm({
     name: ''
 });
-
-function showFlashMessage(text) {
-    flashMessages.push({
-        id: Date.now(),
-        text: text
-    });
-
-    setTimeout(() => {
-        flashMessages.shift();
-    }, 2000);
-}
 
 function submit() {
     form.post(route('statuses.store'), {
@@ -73,17 +63,4 @@ function submit() {
 </script>
 
 <style scoped>
-div.msg_flash {
-    margin-top: 0.5em !important;
-    margin-bottom: 0em !important;
-}
-.fade-enter-active,
-.fade-leave-active {
-    transition: opacity 0.5s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-    opacity: 0;
-}
 </style>

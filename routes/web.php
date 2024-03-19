@@ -28,7 +28,7 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
-Route::get('/task_statuses', [TaskStatusController::class, 'index'])->name('statuses');
+Route::get('/task_statuses', [TaskStatusController::class, 'index'])->name('statuses.index');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -41,6 +41,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/{id}/edit', [TaskStatusController::class, 'edit'])->name('statuses.edit');
         Route::get('/{id}', [TaskStatusController::class, 'show'])->name('statuses.show');
         Route::patch('/{id}', [TaskStatusController::class, 'update'])->name('statuses.update');
+        Route::delete('/{id}', [TaskStatusController::class, 'destroy'])->name('statuses.destroy');
     });
 });
 

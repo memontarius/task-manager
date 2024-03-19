@@ -9,5 +9,7 @@
     "Tags": "Tags",
     "Create status": "Create status",
     "New status": "New status",
-    "New status created successfully!": "New status created successfully!"
+    "New status created successfully": "New status created successfully!",
+    "Status updated successfully": "Status updated successfully!",
+    "Edit status": "Edit status"
 }
