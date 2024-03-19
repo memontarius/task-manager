@@ -1,12 +1,12 @@
 <template>
-    <Head :title="trans('Edit status')" />
+    <Head :title="trans('New label')"/>
     <AuthenticatedLayout>
         <template #header>
-            <h1 class="font-semibold text-xl text-gray-800 leading-tight">{{ $t('Edit status') }}</h1>
+            <h1 class="font-semibold text-xl text-gray-800 leading-tight">{{ $t('New label') }}</h1>
         </template>
         <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
             <form @submit.prevent="submit">
-                <InputLabel for="name" value="Название статуса"/>
+                <InputLabel for="name" value="Название метки"/>
                 <TextInput
                     id="name"
                     type="text"
@@ -17,12 +17,23 @@
                     autocomplete="name"
                 />
                 <InputError class="mt-2" :message="form.errors.name"/>
+                <InputLabel class="mt-4" for="description" value="Описание метки"/>
+                <TextInput
+                    id="description"
+                    type="text"
+                    class="mt-1 block w-full"
+                    v-model="form.description"
+                    required
+                    autofocus
+                    autocomplete="description"
+                />
+                <InputError class="mt-2" :message="form.errors.description"/>
                 <PrimaryButton
                     type="submit"
                     class="mt-8 block w-44"
                     :disabled="form.processing"
                 >
-                    Редактировать
+                    Создать
                 </PrimaryButton>
             </form>
         </div>
@@ -34,40 +45,34 @@
 
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import {Head, useForm, usePage} from "@inertiajs/vue3";
 import {trans} from "laravel-vue-i18n";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
 import InputLabel from "@/Components/InputLabel.vue";
-import FlashMessage from "@/Components/FlashMessage.vue";
 import TextInput from "@/Components/TextInput.vue";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
+import {Head, useForm, usePage} from "@inertiajs/vue3";
 import InputError from "@/Components/InputError.vue";
-import {onMounted, reactive} from "vue";
+import FlashMessage from "@/Components/FlashMessage.vue";
+import {onMounted, reactive, ref} from "vue";
 import useFlashMessages from "@/Hooks/useFlashMessages";
 
 const { messages: flashMessages, show: showFlashMessage } = useFlashMessages();
 
-const props = defineProps({
-    'status': {
-        type: Object,
-        default: null
-    }
-})
-
 const form = useForm({
-    name: props.status.name
+    name: '',
+    description: ''
 });
 
 function submit() {
-    if (form.isDirty) {
-        form.put(route('statuses.update', {'id': props.status.id}), {
-            onSuccess: () => {
-                if (usePage().props.flash.message) {
-                    usePage().props.flash.message.forEach(n => showFlashMessage(n));
-                }
+    form.post(route('labels.store'), {
+        onSuccess: () => {
+            if (usePage().props.flash.message) {
+                usePage().props.flash.message.forEach(n => showFlashMessage(n));
             }
-        });
-    }
+            form.reset();
+        }
+    });
 }
+
 </script>
 
 <style scoped>

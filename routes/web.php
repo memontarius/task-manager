@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LabelController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TaskStatusController;
 use Illuminate\Foundation\Application;
@@ -29,6 +30,7 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('/task_statuses', [TaskStatusController::class, 'index'])->name('statuses.index');
+Route::get('/labels', [LabelController::class, 'index'])->name('labels.index');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -42,6 +44,15 @@ Route::middleware('auth')->group(function () {
         Route::get('/{id}', [TaskStatusController::class, 'show'])->name('statuses.show');
         Route::put('/{id}', [TaskStatusController::class, 'update'])->name('statuses.update');
         Route::delete('/{id}', [TaskStatusController::class, 'destroy'])->name('statuses.destroy');
+    });
+
+    Route::prefix('labels')->group(function () {
+        Route::get('/create', [LabelController::class, 'create'])->name('labels.create');
+        Route::post('/create', [LabelController::class, 'store'])->name('labels.store');
+        Route::get('/{label}/edit', [LabelController::class, 'edit'])->name('labels.edit');
+        Route::get('/{label}', [LabelController::class, 'show'])->name('labels.show');
+        Route::put('/{label}', [LabelController::class, 'update'])->name('labels.update');
+        Route::delete('/{label}', [LabelController::class, 'destroy'])->name('labels.destroy');
     });
 });
 

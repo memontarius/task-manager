@@ -1,22 +1,33 @@
 <template>
-    <Head :title="trans('Edit status')" />
+    <Head :title="trans('Edit label')" />
     <AuthenticatedLayout>
         <template #header>
-            <h1 class="font-semibold text-xl text-gray-800 leading-tight">{{ $t('Edit status') }}</h1>
+            <h1 class="font-semibold text-xl text-gray-800 leading-tight">{{ $t('Edit label') }}</h1>
         </template>
         <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
             <form @submit.prevent="submit">
-                <InputLabel for="name" value="Название статуса"/>
+                <InputLabel for="name" value="Название метки"/>
                 <TextInput
                     id="name"
                     type="text"
-                    class="mt-1 block w-full"
+                    class="mt-1 block w-full mb-4"
                     v-model="form.name"
                     required
                     autofocus
                     autocomplete="name"
                 />
                 <InputError class="mt-2" :message="form.errors.name"/>
+                <InputLabel for="description" value="Описание метки"/>
+                <TextInput
+                    id="description"
+                    type="text"
+                    class="mt-1 block w-full"
+                    v-model="form.description"
+                    required
+                    autofocus
+                    autocomplete="description"
+                />
+                <InputError class="mt-2" :message="form.errors.description"/>
                 <PrimaryButton
                     type="submit"
                     class="mt-8 block w-44"
@@ -47,19 +58,20 @@ import useFlashMessages from "@/Hooks/useFlashMessages";
 const { messages: flashMessages, show: showFlashMessage } = useFlashMessages();
 
 const props = defineProps({
-    'status': {
+    'label': {
         type: Object,
         default: null
     }
 })
 
 const form = useForm({
-    name: props.status.name
+    name: props.label.name,
+    description: props.label.description
 });
 
 function submit() {
     if (form.isDirty) {
-        form.put(route('statuses.update', {'id': props.status.id}), {
+        form.put(route('labels.update', {'id': props.label.id}), {
             onSuccess: () => {
                 if (usePage().props.flash.message) {
                     usePage().props.flash.message.forEach(n => showFlashMessage(n));

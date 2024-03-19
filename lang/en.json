@@ -6,10 +6,14 @@
     "Log Out": "Log Out",
     "Tasks": "Tasks",
     "Statuses": "Statuses",
-    "Tags": "Tags",
+    "Labels": "Labels",
+    "Label": "Label",
     "Create status": "Create status",
     "New status": "New status",
     "New status created successfully": "New status created successfully!",
     "Status updated successfully": "Status updated successfully!",
-    "Edit status": "Edit status"
+    "Edit status": "Edit status",
+    "Edit label": "Edit label",
+    "Label updated successfully": "Label updated successfully",
+    "New label created successfully": "New label created successfully"
 }

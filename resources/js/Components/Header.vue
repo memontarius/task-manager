@@ -34,8 +34,8 @@ const showingNavigationDropdown = ref(false);
                         <NavLink :href="route('statuses.index')" :active="route().current('statuses.index')">
                             {{ $t('Statuses') }}
                         </NavLink>
-                        <NavLink :href="route('home')" :active="route().current('none')">
-                            {{ $t('Tags') }}
+                        <NavLink :href="route('labels.index')" :active="route().current('labels.index')">
+                            {{ $t('Labels') }}
                         </NavLink>
                     </div>
 
@@ -135,8 +135,8 @@ const showingNavigationDropdown = ref(false);
                     <ResponsiveNavLink :href="route('statuses.index')" :active="route().current('statuses.index')">
                         {{ $t('Statuses') }}
                     </ResponsiveNavLink>
-                    <ResponsiveNavLink :href="route('home')" :active="route().current('marks')">
-                        {{ $t('Tags') }}
+                    <ResponsiveNavLink :href="route('labels.index')" :active="route().current('labels.index')">
+                        {{ $t('Labels') }}
                     </ResponsiveNavLink>
                 </div>
 

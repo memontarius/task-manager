@@ -6,10 +6,15 @@
     "Log Out": "Выйти",
     "Tasks": "Задачи",
     "Statuses": "Статусы",
-    "Tags": "Метки",
+    "Labels": "Метки",
+    "Label": "Метка",
     "Create status": "Создать статус",
     "New status": "Новый статус",
     "New status created successfully": "Новый статус успешно создан!",
     "Status updated successfully": "Статус успешно обновлён!",
-    "Edit status": "Редактировать статус"
+    "Edit status": "Редактировать статус",
+    "Edit label": "Редактировать метку",
+    "New label": "Новая метка",
+    "Label updated successfully": "Метка успешно обновлёна!",
+    "New label created successfully": "Новая метка успешно создана!"
 }
