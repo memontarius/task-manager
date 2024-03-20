@@ -21,14 +21,14 @@
                         <td v-if="$page.props.auth.user" style="text-align: right">
                             <Link :href="route('statuses.edit', status.id)"
                                 class="font-medium text-blue-600 hover:text-blue-800 hover:underline mr-2">
-                                Редактировать
+                                <FontAwesomeIcon :icon="faPenToSquare" />
                             </Link>
                                 <a
                                     :href="route('statuses.destroy', status.id)"
                                     class="font-medium text-red-600 hover:text-red-800 hover:underline inline-block hover:cursor-pointer"
                                     @click.prevent="deleteStatus(status.id)"
                                 >
-                                Удалить
+                                    <FontAwesomeIcon :icon="faTrashCan" />
                                 </a>
                         </td>
                     </tr>
@@ -53,9 +53,12 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import LinkAsButton from "@/Components/LinkAsButton.vue";
 import NavLink from "@/Components/NavLink.vue";
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { faPenToSquare, faTrashCan } from '@fortawesome/free-regular-svg-icons';
 
 export default {
     components: {
+        FontAwesomeIcon,
         NavLink,
         LinkAsButton,
         Link,
@@ -68,7 +71,9 @@ export default {
     },
     data() {
         return {
-            statusList: this.statuses
+            statusList: this.statuses,
+            faPenToSquare,
+            faTrashCan
         }
     },
     methods: {

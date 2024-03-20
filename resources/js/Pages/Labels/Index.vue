@@ -23,14 +23,14 @@
                         <td v-if="$page.props.auth.user" style="text-align: right">
                             <Link :href="route('labels.edit', labels.id)"
                                 class="font-medium text-blue-600 hover:text-blue-800 hover:underline mr-2">
-                                Редактировать
+                                <FontAwesomeIcon :icon="faPenToSquare" />
                             </Link>
                             <a
                                 :href="route('labels.destroy', labels.id)"
                                 class="font-medium text-red-600 hover:text-red-800 hover:underline inline-block hover:cursor-pointer"
                                 @click.prevent="deleteLabel(labels.id)"
                             >
-                            Удалить
+                                <FontAwesomeIcon :icon="faTrashCan" />
                             </a>
                         </td>
                     </tr>
@@ -55,10 +55,13 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import LinkAsButton from "@/Components/LinkAsButton.vue";
 import NavLink from "@/Components/NavLink.vue";
-import {trans, wTrans} from "laravel-vue-i18n";
+import {trans} from "laravel-vue-i18n";
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { faPenToSquare, faTrashCan } from '@fortawesome/free-regular-svg-icons';
 
 export default {
     components: {
+        FontAwesomeIcon,
         NavLink,
         LinkAsButton,
         Link,
@@ -67,11 +70,13 @@ export default {
         UpdatePasswordForm, SubHeader, Header, Head
     },
     props: {
-        labels: { type: Object },
+        labels: { type: Object }
     },
     data() {
         return {
-            labelList: this.labels
+            labelList: this.labels,
+            faPenToSquare,
+            faTrashCan
         }
     },
     methods: {
