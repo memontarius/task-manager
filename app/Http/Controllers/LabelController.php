@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\LabelResource;
 use App\Models\Label;
-use App\Models\TaskStatus;
+use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
@@ -85,7 +85,16 @@ class LabelController extends Controller
      */
     public function destroy(Label $label)
     {
-        $label->delete();
-        return Redirect::route('labels.index');
+        $messages = [];
+
+        if ($label->tasks()->exists()) {
+            $messages[] = __('Failed to remove label');
+        }
+        else {
+            $label->delete();
+        }
+
+        return Redirect::back()
+            ->with('message', $messages);
     }
 }

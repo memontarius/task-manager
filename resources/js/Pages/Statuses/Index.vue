@@ -4,6 +4,10 @@
         <Header/>
         <SubHeader content="Статусы"/>
         <div class="py-12 max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+            <TransitionGroup  name="fade" tag="div">
+                <FlashMessage class="msg_flash text-red-800 border-red-300 bg-red-50 dark:bg-red-800 dark:text-red-400 dark:border-red-800"
+                              v-for="message in flashMessages" :key="message.id" :message="message.text"/>
+            </TransitionGroup>
             <div v-if="statusList.length > 0" class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                 <table class="w-full">
                     <thead class="border-b-2 border-gray-700 pb-8">
@@ -44,49 +48,40 @@
     </div>
 </template>
 
-<script>
-import {Head, Link} from "@inertiajs/vue3";
+<script setup>
+import {Head, router, usePage} from "@inertiajs/vue3";
 import Header from "@/Components/Header.vue";
+import Link from "@/Components/Link.vue";
 import SubHeader from "@/Components/SubHeader.vue";
-import UpdatePasswordForm from "@/Pages/Profile/Partials/UpdatePasswordForm.vue";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
-import SecondaryButton from "@/Components/SecondaryButton.vue";
 import LinkAsButton from "@/Components/LinkAsButton.vue";
-import NavLink from "@/Components/NavLink.vue";
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faPenToSquare, faTrashCan } from '@fortawesome/free-regular-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome';
+import {faPenToSquare, faTrashCan} from '@fortawesome/free-regular-svg-icons';
+import FlashMessage from "@/Components/FlashMessage.vue";
+import useFlashMessages from "@/Hooks/useFlashMessages";
+import {ref} from "vue";
 
-export default {
-    components: {
-        FontAwesomeIcon,
-        NavLink,
-        LinkAsButton,
-        Link,
-        SecondaryButton,
-        PrimaryButton,
-        UpdatePasswordForm, SubHeader, Header, Head
-    },
-    props: {
-        statuses: { type: Object }
-    },
-    data() {
-        return {
-            statusList: this.statuses,
-            faPenToSquare,
-            faTrashCan
+const props = defineProps({
+    'statuses': Object
+});
+
+const { messages: flashMessages, show: showFlashMessage } = useFlashMessages();
+const { page } = usePage();
+const statusList = ref(props.statuses.data);
+
+function deleteStatus(statusId) {
+    router.delete(`/task_statuses/${statusId}`, {
+        preserveScroll: true,
+        onSuccess: () => {
+            const messages = usePage().props.flash.message ?? [];
+
+            if (messages.length > 0) {
+                messages.forEach(n => showFlashMessage(n));
+            }
+            else {
+                statusList.value = statusList.value.filter(s => s.id != statusId);
+            }
         }
-    },
-    methods: {
-        deleteStatus(statusId) {
-            this.$inertia.delete(`/task_statuses/${statusId}`)
-            this.statusList = this.statusList.filter(s => s.id != statusId);
-        }
-    },
-    setup(props) {
-        return {
-            'statuses': props.statuses.data,
-        }
-    }
+    })
 }
 </script>
 

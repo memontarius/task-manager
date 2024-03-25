@@ -29,6 +29,15 @@ set-testing:
 mig:
 	php artisan migrate
 
+migrf:
+	php artisan migrate:refresh
+
+migf:
+	php artisan migrate:fresh
+
+migrb:
+	php artisan migrate:rollback
+
 c-mig:
 	docker exec $(cname) make mig
 
@@ -50,9 +59,9 @@ c-test:
 
 
 # _____________ Seeding _____________
-c-seed:
-	docker exec $(cname) make seed c=$(c)
-
 c=DatabaseSeeder
 seed:
 	php artisan db:seed --class=$(c)
+
+c-seed:
+	docker exec $(cname) make seed c=$(c)

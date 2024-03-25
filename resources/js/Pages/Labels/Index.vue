@@ -4,6 +4,10 @@
         <Header/>
         <SubHeader :content="trans('Labels')"/>
         <div class="py-12 max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+            <TransitionGroup  name="fade" tag="div">
+                <FlashMessage class="msg_flash text-red-800 border-red-300 bg-red-50 dark:bg-red-800 dark:text-red-400 dark:border-red-800"
+                              v-for="message in flashMessages" :key="message.id" :message="message.text"/>
+            </TransitionGroup>
             <div v-if="labelList.length > 0" class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                 <table class="w-full">
                     <thead class="border-b-2 border-gray-700 pb-8">
@@ -15,8 +19,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="labels in labelList" class="border-b border-dashed text-left">
-                        <td>{{ labels.id }}</td>
+                    <tr v-for=" (labels, index) in labelList" class="border-b border-dashed text-left">
+                        <td>{{ index + 1 }} </td>
                         <td>{{ labels.name }}</td>
                         <td>{{ labels.description }}</td>
                         <td>{{ labels.created_date }}</td>
@@ -46,52 +50,42 @@
     </div>
 </template>
 
-<script>
-import {Head, Link} from "@inertiajs/vue3";
+<script setup>
+import {Head, Link, router, usePage} from "@inertiajs/vue3";
 import Header from "@/Components/Header.vue";
 import SubHeader from "@/Components/SubHeader.vue";
-import UpdatePasswordForm from "@/Pages/Profile/Partials/UpdatePasswordForm.vue";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
-import SecondaryButton from "@/Components/SecondaryButton.vue";
 import LinkAsButton from "@/Components/LinkAsButton.vue";
-import NavLink from "@/Components/NavLink.vue";
 import {trans} from "laravel-vue-i18n";
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faPenToSquare, faTrashCan } from '@fortawesome/free-regular-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome';
+import {faPenToSquare, faTrashCan} from '@fortawesome/free-regular-svg-icons';
+import FlashMessage from "@/Components/FlashMessage.vue";
+import useFlashMessages from "@/Hooks/useFlashMessages";
+import {computed, onMounted, ref} from "vue";
 
-export default {
-    components: {
-        FontAwesomeIcon,
-        NavLink,
-        LinkAsButton,
-        Link,
-        SecondaryButton,
-        PrimaryButton,
-        UpdatePasswordForm, SubHeader, Header, Head
-    },
-    props: {
-        labels: { type: Object }
-    },
-    data() {
-        return {
-            labelList: this.labels,
-            faPenToSquare,
-            faTrashCan
+const props = defineProps({
+    labels: { type: Object }
+});
+
+const { messages: flashMessages, show: showFlashMessage } = useFlashMessages();
+const { page } = usePage();
+const labelList = ref(props.labels.data);
+
+function deleteLabel(id) {
+    router.delete(route('labels.destroy', id), {
+        preserveScroll: true,
+        onSuccess: () => {
+            const messages = usePage().props.flash.message ?? [];
+
+            if (messages.length > 0) {
+                messages.forEach(n => showFlashMessage(n));
+            }
+            else {
+                labelList.value = labelList.value.filter(l => l.id != id);
+            }
         }
-    },
-    methods: {
-        trans,
-        deleteLabel(id) {
-            this.$inertia.delete(route('labels.destroy', id) )
-            this.labelList = this.labelList.filter(l => l.id != id);
-        }
-    },
-    setup(props) {
-        return {
-            'labels': props.labels.data,
-        }
-    }
+    });
 }
+
 </script>
 
 <style scoped>

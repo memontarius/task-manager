@@ -4,6 +4,9 @@
         <template #header>
             <h1 class="font-semibold text-xl text-gray-800 leading-tight">{{ $t('Edit status') }}</h1>
         </template>
+        <TransitionGroup  name="fade" tag="div">
+            <FlashMessage class="msg_flash" v-for="message in flashMessages" :key="message.id" :message="message.text"/>
+        </TransitionGroup>
         <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
             <form @submit.prevent="submit">
                 <InputLabel for="name" value="Название статуса"/>
@@ -22,13 +25,10 @@
                     class="mt-8 block w-44"
                     :disabled="form.processing"
                 >
-                    Редактировать
+                    Применить изменения
                 </PrimaryButton>
             </form>
         </div>
-        <TransitionGroup  name="fade" tag="div">
-            <FlashMessage class="msg_flash" v-for="message in flashMessages" :key="message.id" :message="message.text"/>
-        </TransitionGroup>
     </AuthenticatedLayout>
 </template>
 
@@ -59,7 +59,7 @@ const form = useForm({
 
 function submit() {
     if (form.isDirty) {
-        form.put(route('statuses.update', {'id': props.status.id}), {
+        form.patch(route('statuses.update', {'id': props.status.id}), {
             onSuccess: () => {
                 if (usePage().props.flash.message) {
                     usePage().props.flash.message.forEach(n => showFlashMessage(n));

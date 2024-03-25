@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\LabelController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskStatusController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Auth;
@@ -29,6 +30,7 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
+Route::get('/tasks', [TaskController::class, 'index'])->name('tasks.index');
 Route::get('/task_statuses', [TaskStatusController::class, 'index'])->name('statuses.index');
 Route::get('/labels', [LabelController::class, 'index'])->name('labels.index');
 
@@ -40,10 +42,10 @@ Route::middleware('auth')->group(function () {
     Route::prefix('task_statuses')->group(function () {
         Route::get('/create', [TaskStatusController::class, 'create'])->name('statuses.create');
         Route::post('/create', [TaskStatusController::class, 'store'])->name('statuses.store');
-        Route::get('/{id}/edit', [TaskStatusController::class, 'edit'])->name('statuses.edit');
-        Route::get('/{id}', [TaskStatusController::class, 'show'])->name('statuses.show');
-        Route::put('/{id}', [TaskStatusController::class, 'update'])->name('statuses.update');
-        Route::delete('/{id}', [TaskStatusController::class, 'destroy'])->name('statuses.destroy');
+        Route::get('/{status}/edit', [TaskStatusController::class, 'edit'])->name('statuses.edit');
+        Route::get('/{status}', [TaskStatusController::class, 'show'])->name('statuses.show');
+        Route::patch('/{status}', [TaskStatusController::class, 'update'])->name('statuses.update');
+        Route::delete('/{status}', [TaskStatusController::class, 'destroy'])->name('statuses.destroy');
     });
 
     Route::prefix('labels')->group(function () {
@@ -51,8 +53,17 @@ Route::middleware('auth')->group(function () {
         Route::post('/create', [LabelController::class, 'store'])->name('labels.store');
         Route::get('/{label}/edit', [LabelController::class, 'edit'])->name('labels.edit');
         Route::get('/{label}', [LabelController::class, 'show'])->name('labels.show');
-        Route::put('/{label}', [LabelController::class, 'update'])->name('labels.update');
+        Route::patch('/{label}', [LabelController::class, 'update'])->name('labels.update');
         Route::delete('/{label}', [LabelController::class, 'destroy'])->name('labels.destroy');
+    });
+
+    Route::prefix('tasks')->group(function () {
+        Route::get('/create', [TaskController::class, 'create'])->name('tasks.create');
+        Route::post('/create', [TaskController::class, 'store'])->name('tasks.store');
+        Route::get('/{task}/edit', [TaskController::class, 'edit'])->name('tasks.edit');
+        Route::get('/{task}', [TaskController::class, 'show'])->name('tasks.show');
+        Route::patch('/{task}', [TaskController::class, 'update'])->name('tasks.update');
+        Route::delete('/{task}', [TaskController::class, 'destroy'])->name('tasks.destroy');
     });
 });
 

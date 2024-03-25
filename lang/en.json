@@ -15,5 +15,8 @@
     "Edit status": "Edit status",
     "Edit label": "Edit label",
     "Label updated successfully": "Label updated successfully",
-    "New label created successfully": "New label created successfully"
+    "New label created successfully": "New label created successfully",
+    "New task": "New task",
+    "Edit task": "Edit task",
+    "Task created successfully": "Task created successfully"
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\TaskStatusResource;
+use App\Models\Task;
 use App\Models\TaskStatus;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -44,42 +45,44 @@ class TaskStatusController extends Controller
             ->with('message', [__('New status created successfully')]);
     }
 
-    public function edit(string $id): Response
+    public function edit(TaskStatus $status): Response
     {
-        $status = TaskStatus::findOrFail($id);
-
         return Inertia::render('Statuses/Edit', [
             'status' => $status
         ]);
     }
 
-    public function show(string $id): Response
+    public function show(TaskStatus $status): Response
     {
-        $status = TaskStatus::findOrFail($id);
-
         return Inertia::render('Statuses/Show', [
             'status' => $status
         ]);
     }
 
-    public function update(Request $request, string $id): RedirectResponse
+    public function update(Request $request, TaskStatus $status): RedirectResponse
     {
         $data = $request->validate([
             'name' => ['required', 'min:3', "unique:{$this->table}"]
         ]);
 
-        TaskStatus::where('id', $id)->update($data);
+        $status->update($data);
 
         return Redirect::back()
             ->with('message', [__('Status updated successfully')]);
     }
 
-    public function destroy(string $id): RedirectResponse
+    public function destroy( TaskStatus $status): RedirectResponse
     {
-        $status = TaskStatus::findOrFail($id);
-        $status->delete();
+        $messages = [];
+
+        if ($status->tasks()->exists()) {
+            $messages[] = __('Failed to remove status');
+        }
+        else {
+            $status->delete();
+        }
 
         return Redirect::route('statuses.index')
-            ->with('message', [__('Status deleted successfully')]);
+            ->with('message', $messages);
     }
 }
