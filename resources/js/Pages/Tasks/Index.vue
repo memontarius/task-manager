@@ -3,14 +3,19 @@ import SubHeader from "@/Components/SubHeader.vue";
 import {Head, Link, router, usePage} from "@inertiajs/vue3";
 import LinkAsButton from "@/Components/LinkAsButton.vue";
 import Header from "@/Components/Header.vue";
-import {ref} from "vue";
+import {computed, ref, toRaw} from "vue";
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome';
 import {faPenToSquare, faTrashCan} from '@fortawesome/free-regular-svg-icons';
 import useFlashMessages from "@/Hooks/useFlashMessages.js";
 import FlashMessage from "@/Components/FlashMessage.vue";
+import Pagination from "@/Components/Pagination.vue";
 
 const props = defineProps({
-    'tasks': Object
+    tasks: Object,
+    page: Number,
+    perPage: Number,
+    total: Number,
+    params: Object
 });
 
 const { messages: flashMessages, show: showFlashMessage } = useFlashMessages();
@@ -32,6 +37,7 @@ function deleteTask(taskId) {
         }
     })
 }
+
 </script>
 
 <template>
@@ -67,12 +73,12 @@ function deleteTask(taskId) {
                         <td>{{ task.created_date }}</td>
                         <td v-if="$page.props.auth.user" style="text-align: right">
                             <Link :href="route('tasks.edit', task.id)"
-                                  class="font-medium text-blue-600 hover:text-blue-800 hover:underline mr-2">
+                                  class="font-medium text-blue-600 hover:text-blue-800 hover:underline">
                                 <FontAwesomeIcon :icon="faPenToSquare" />
                             </Link>
                             <a
                                 :href="route('tasks.destroy', task.id)"
-                                class="font-medium text-red-600 hover:text-red-800 hover:underline inline-block hover:cursor-pointer"
+                                class="font-medium text-red-600 hover:text-red-800 hover:underline inline-block hover:cursor-pointer ml-2"
                                 @click.prevent="deleteTask(task.id)"
                             >
                                 <FontAwesomeIcon :icon="faTrashCan" />
@@ -81,6 +87,7 @@ function deleteTask(taskId) {
                     </tr>
                     </tbody>
                 </table>
+                <Pagination :page="props.page" :per-page="perPage" :total="total" :params="params" />
             </div>
             <div v-if="$page.props.auth.user" class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                 <LinkAsButton :href="route('tasks.create')">

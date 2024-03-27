@@ -16,11 +16,30 @@ use Inertia\Response;
 
 class TaskController extends Controller
 {
-    public function index(): \Inertia\Response
+    public function index(Request $request): \Inertia\Response
     {
-        $tasks = Task::all()->sortBy('id');
+        $query = $request->validate([
+            'page' => 'numeric',
+            'perPage' => 'numeric',
+        ]);
+
+        $page = $query['page'] ?? 1;
+        $perPage = $query['perPage'] ?? 10;
+        $query['page'] = $page;
+
+        $paginatedTasks = Task::orderBy('id')->paginate(
+            page: $page,
+            perPage: $perPage
+        );
+
+        $tasks = $paginatedTasks->items();
+
         return Inertia::render('Tasks/Index', [
-                'tasks' => MinifiedTaskResource::collection($tasks)
+                'tasks' => MinifiedTaskResource::collection($tasks),
+                'page' => $paginatedTasks->currentPage(),
+                'perPage' => $paginatedTasks->perPage(),
+                'total' => $paginatedTasks->total(),
+                'params' => $query
             ]);
     }
 
