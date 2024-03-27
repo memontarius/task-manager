@@ -17,6 +17,12 @@ class Task extends Model
         'created_by_id'
     ];
 
+    protected $casts = [
+        'status_id' => 'integer',
+        'assigned_to_id' => 'integer',
+        'created_by_id' => 'integer'
+    ];
+
     public function labels(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(Label::class, 'task_label', 'task_id', 'label_id');

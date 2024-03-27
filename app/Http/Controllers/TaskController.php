@@ -13,33 +13,50 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class TaskController extends Controller
 {
-    public function index(Request $request): \Inertia\Response
+    public function index(Request $request): Response|\Illuminate\Http\RedirectResponse
     {
         $query = $request->validate([
             'page' => 'numeric',
             'perPage' => 'numeric',
+            'filter' => ''
         ]);
 
         $page = $query['page'] ?? 1;
         $perPage = $query['perPage'] ?? 10;
         $query['page'] = $page;
 
-        $paginatedTasks = Task::orderBy('id')->paginate(
-            page: $page,
-            perPage: $perPage
-        );
+        try {
+            $paginatedTasks = QueryBuilder::for(Task::class)
+                ->allowedFilters([
+                    AllowedFilter::exact('status_id'),
+                    AllowedFilter::exact('created_by_id'),
+                    AllowedFilter::exact('assigned_to_id')])
+                ->orderBy('id')
+                ->paginate(
+                    perPage: $perPage,
+                    page: $page
+                );
+        }
+        catch (\Exception $exception) {
+            return to_route('tasks.index');
+        }
 
-        $tasks = $paginatedTasks->items();
+        $statuses = TaskStatus::all()->toArray();
+        $users = User::all()->sortBy('id');
 
         return Inertia::render('Tasks/Index', [
-                'tasks' => MinifiedTaskResource::collection($tasks),
+                'tasks' => MinifiedTaskResource::collection($paginatedTasks->items()),
                 'page' => $paginatedTasks->currentPage(),
                 'perPage' => $paginatedTasks->perPage(),
                 'total' => $paginatedTasks->total(),
-                'params' => $query
+                'params' => $query,
+                'statuses' => $statuses,
+                'users' => $users
             ]);
     }
 
