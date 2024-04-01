@@ -20,6 +20,12 @@ use Inertia\Inertia;
 |
 */
 
+Route::get('/auth/{provider}/redirect', [\App\Http\Controllers\Auth\ThirdPartyLoginController::class, 'redirect'])
+    ->where('provider', 'mailru')
+    ->name('third.party.redirect');
+Route::get('/auth/{provider}/callback', [\App\Http\Controllers\Auth\ThirdPartyLoginController::class, 'callback'])
+    ->where('provider', 'mailru');
+
 Route::get('/', function () {
     return Inertia::render('Home', [
         'authUser' => Auth::user(),

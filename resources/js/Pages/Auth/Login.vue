@@ -6,6 +6,8 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
+import SecondaryButton from "@/Components/SecondaryButton.vue";
+import LinkAsButton from "@/Components/LinkAsButton.vue";
 
 defineProps({
     canResetPassword: {
@@ -91,5 +93,12 @@ const submit = () => {
                 </PrimaryButton>
             </div>
         </form>
+        <div class="flex items-center justify-center mt-4">
+           <a
+               href="/auth/mailru/redirect"
+               class="font-sans text-sm text-amber-700 ring-1 ring-amber-700 rounded rounded-lg px-4 py-2 focus:ring-2 focus:ring-amber-700 focus:ring-offset-2 transition ease-in-out duration-150" >
+               Войти через Mail.ru
+           </a>
+        </div>
     </GuestLayout>
 </template>

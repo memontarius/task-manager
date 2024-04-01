@@ -41,6 +41,9 @@ migrb:
 c-mig:
 	docker exec $(cname) make mig
 
+c-migrb:
+	docker exec $(cname) make migrb
+
 
 # _____________ Testing _____________
 test:

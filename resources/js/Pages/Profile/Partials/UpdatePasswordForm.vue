@@ -6,6 +6,13 @@ import TextInput from '@/Components/TextInput.vue';
 import { useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
 
+defineProps({
+   displayCurrPassword: {
+       type: Boolean,
+       default: true
+   }
+});
+
 const passwordInput = ref(null);
 const currentPasswordInput = ref(null);
 
@@ -45,9 +52,10 @@ const updatePassword = () => {
 
         <form @submit.prevent="updatePassword" class="mt-6 space-y-6">
             <div>
-                <InputLabel for="current_password" value="Current Password" />
+                <InputLabel v-if="displayCurrPassword" for="current_password" value="Current Password" />
 
                 <TextInput
+                    v-if="displayCurrPassword"
                     id="current_password"
                     ref="currentPasswordInput"
                     v-model="form.current_password"
