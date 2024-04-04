@@ -1,16 +1,55 @@
 
+ENV_PATH=./.env
+ifneq ("$(wildcard $(ENV_PATH))","")
+	 include $(ENV_PATH)
+endif
+
+DOCKER_FILE_PREFIX=
+ifeq ($(APP_ENV),developement)
+	DOCKER_FILE_PREFIX=-dev
+endif
+ifeq ($(APP_ENV),local)
+	DOCKER_FILE_PREFIX=-dev
+endif
+
+DOCKER_FILE=docker-compose$(DOCKER_FILE_PREFIX).yml
+
 cname=task_tracker_app # Container name
 c= # Class name
 
+
+# _____________ Setup _____________
+i:
+	composer install
+	npm i
+	npm run build
+
+prepare-env:
+	cp -n .env.example .env || true
+	make key
+
+setup: up
+	sleep 3
+	sudo chmod 777 -R storage
+	make c-mig
+
+
+# _____________ Docker _____________
+
 up:
-	docker compose up -d
+	docker compose --file $(DOCKER_FILE) up -d
 
 dw:
-	docker compose down
+	docker compose --file $(DOCKER_FILE) down
 
 in:
 	docker exec -it $(cname) bash
 
+
+# _____________ Helpers _____________
+
+key:
+	php artisan key:generate
 
 cache-clr:
 	php artisan cache:clear
