@@ -24,6 +24,7 @@
         "@fortawesome/free-solid-svg-icons": "^6.5.1",
         "@fortawesome/vue-fontawesome": "^3.0.6",
         "@inertiajs/inertia": "^0.11.1",
+        "@sentry/vue": "^7.40.0",
         "laravel-vue-i18n": "^2.7.1"
     }
 }
