@@ -10,6 +10,7 @@ import useFlashMessages from "@/Hooks/useFlashMessages.js";
 import FlashMessage from "@/Components/FlashMessage.vue";
 import Pagination from "@/Components/Pagination.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
+import Footer from "@/Components/Footer.vue";
 
 const props = defineProps({
     tasks: Object,
@@ -154,6 +155,7 @@ function submitFilter() {
                 </LinkAsButton>
             </div>
         </div>
+        <Footer/>
     </div>
 </template>
 

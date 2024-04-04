@@ -45,6 +45,7 @@
                 </LinkAsButton>
             </div>
         </div>
+        <Footer/>
     </div>
 </template>
 
@@ -59,6 +60,7 @@ import {faPenToSquare, faTrashCan} from '@fortawesome/free-regular-svg-icons';
 import FlashMessage from "@/Components/FlashMessage.vue";
 import useFlashMessages from "@/Hooks/useFlashMessages";
 import {ref} from "vue";
+import Footer from "@/Components/Footer.vue";
 
 const props = defineProps({
     'statuses': Object

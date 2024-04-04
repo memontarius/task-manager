@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Services\VisitorCounter;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
@@ -14,6 +15,12 @@ class HandleInertiaRequests extends Middleware
      * @var string
      */
     protected $rootView = 'app';
+
+    public function __construct(
+        private readonly VisitorCounter $visitorCounter
+    )
+    {
+    }
 
     /**
      * Determine the current asset version.
@@ -41,7 +48,8 @@ class HandleInertiaRequests extends Middleware
             ],
             'flash' => [
                 'message' => $request->session()->get('message')
-            ]
+            ],
+            'visitorsCount' => $this->visitorCounter->getCount()
         ];
     }
 }

@@ -1,5 +1,6 @@
 <script setup>
 import Header from "@/Components/Header.vue";
+import Footer from "@/Components/Footer.vue";
 </script>
 
 <template>
@@ -21,6 +22,7 @@ import Header from "@/Components/Header.vue";
                     </div>
                 </div>
             </main>
+            <Footer/>
         </div>
     </div>
 </template>

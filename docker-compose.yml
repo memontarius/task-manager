@@ -42,5 +42,17 @@ services:
         ports:
             - 5434:5432
         container_name: task_tracker_db_testing
+    redis:
+        image: redis:latest
+        hostname: 'redis'
+        restart: always
+        command: redis-server --appendonly yes --requirepass "${REDIS_PASSWORD}"
+        volumes:
+            - redis:/root/redis
+            - ./_docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
+        ports:
+            - 6382:6379
+        container_name: task_tracker_redis
 volumes:
     pgdata:
+    redis:
