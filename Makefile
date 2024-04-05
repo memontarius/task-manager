@@ -14,9 +14,8 @@ endif
 
 DOCKER_FILE=docker-compose$(DOCKER_FILE_PREFIX).yml
 
-cname=task_tracker_app # Container name
+cnn=task_tracker_app # Container name
 c= # Class name
-
 
 # _____________ Setup _____________
 i:
@@ -28,11 +27,10 @@ prepare-env:
 	cp -n .env.example .env || true
 	make key
 
-setup: up
-	sleep 3
-	sudo chmod 777 -R storage
+setup:
+	sudo chmod 777 -R storage/
+	sudo chmod 777 -R bootstrap/cache/
 	make c-mig
-
 
 # _____________ Docker _____________
 
@@ -43,10 +41,10 @@ dw:
 	docker compose --file $(DOCKER_FILE) down
 
 in:
-	docker exec -it $(cname) bash
+	docker exec -it $(cnn) bash
 
 
-# _____________ Helpers _____________
+# _____________ Other helpers _____________
 
 key:
 	php artisan key:generate
@@ -78,10 +76,10 @@ migrb:
 	php artisan migrate:rollback
 
 c-mig:
-	docker exec $(cname) make mig
+	docker exec $(cnn) make mig
 
 c-migrb:
-	docker exec $(cname) make migrb
+	docker exec $(cnn) make migrb
 
 
 # _____________ Testing _____________
@@ -94,10 +92,10 @@ testc:
 	php artisan test --filter $(c)
 
 c-testc:
-	docker exec $(cname) make testc c=$(c)
+	docker exec $(cnn) make testc c=$(c)
 
 c-test:
-	docker exec $(cname) make test
+	docker exec $(cnn) make test
 
 
 # _____________ Seeding _____________
@@ -106,4 +104,4 @@ seed:
 	php artisan db:seed --class=$(c)
 
 c-seed:
-	docker exec $(cname) make seed c=$(c)
+	docker exec $(cnn) make seed c=$(c)
