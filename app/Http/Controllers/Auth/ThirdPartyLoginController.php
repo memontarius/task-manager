@@ -5,18 +5,18 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\SocialNetwork;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class ThirdPartyLoginController extends Controller
 {
-    public function redirect(string $provider)
+    public function redirect(string $provider): RedirectResponse|\Illuminate\Http\RedirectResponse
     {
         return Socialite::driver($provider)->redirect();
     }
 
-    public function callback(string $provider, Request $request): \Illuminate\Http\RedirectResponse
+    public function callback(string $provider): \Illuminate\Http\RedirectResponse
     {
         $socialUser = Socialite::driver($provider)->user();
 

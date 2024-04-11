@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\LabelResource;
 use App\Models\Label;
 use App\Models\Task;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
@@ -27,7 +28,7 @@ class LabelController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): Response
     {
         return Inertia::render('Labels/Create');
     }
@@ -35,7 +36,7 @@ class LabelController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         Label::create($request->validate([
             'name' => ['required', 'min:3', 'max:32', "unique:labels"],
@@ -49,7 +50,7 @@ class LabelController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Label $label)
+    public function show(Label $label): Response
     {
         return Inertia::render('Labels/Show', [
             'label' => $label
@@ -69,7 +70,7 @@ class LabelController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Label $label)
+    public function update(Request $request, Label $label): RedirectResponse
     {
         $label->update($request->validate([
             'name' => ['required', 'min:3', 'max:32'],
@@ -83,7 +84,7 @@ class LabelController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Label $label)
+    public function destroy(Label $label): RedirectResponse
     {
         $messages = [];
 

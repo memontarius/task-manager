@@ -7,7 +7,7 @@ services:
             - ./:/var/www
             - ./_docker/nginx/conf.d/:/etc/nginx/conf.d
         ports:
-            - "8822:80"
+            - 8002:80
         container_name: task_tracker_nginx
         depends_on:
             - app

@@ -2,14 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TaskStoreRequest;
 use App\Http\Resources\MinifiedTaskResource;
 use App\Http\Resources\RealTaskResource;
 use App\Http\Resources\TaskResource;
 use App\Models\Label;
+use App\Models\Scopes\TaskWithStatusScope;
 use App\Models\Task;
 use App\Models\TaskStatus;
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -18,7 +22,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class TaskController extends Controller
 {
-    public function index(Request $request): Response|\Illuminate\Http\RedirectResponse
+    public function index(Request $request): Response|RedirectResponse
     {
         $query = $request->validate([
             'page' => 'numeric',
@@ -73,18 +77,12 @@ class TaskController extends Controller
             ]);
     }
 
-    public function store(Request $request)
+    public function store(TaskStoreRequest $request): RedirectResponse
     {
-        $data = $request->validate([
-            'name' => 'required|min:3',
-            'description' => 'max:128',
-            'status_id' => '',
-            'assigned_to_id' => '',
-            'label_id' => ''
-        ]);
+        $data = $request->validated();
 
         $levelIds = $data['label_id'] ?? [];
-        unset($data['label_id']);
+        $data = $request->safe()->except('label_id');
         $data['created_by_id'] = $request->user()->id;
 
         $task = new Task($data);
@@ -118,7 +116,7 @@ class TaskController extends Controller
         ]);
     }
 
-    public function update(Task $task, Request $request): \Illuminate\Http\RedirectResponse
+    public function update(Task $task, Request $request): RedirectResponse
     {
         $data = $request->validate([
             'name' => 'required|min:3',

@@ -7,16 +7,21 @@ services:
             - ./:/var/www
             - ./_docker/nginx/conf.d/:/etc/nginx/conf.d
         ports:
-            - "8822:80"
+            - "8022:80"
         container_name: task_tracker_nginx
         depends_on:
             - app
     app:
         build:
             context: .
+            args:
+              - XDEBUG_INSTALL=true
             dockerfile: _docker/app/Dockerfile
         volumes:
             - ./:/var/www/
+            - ./_docker/app/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+        environment:
+          PHP_IDE_CONFIG: "serverName=app-server"
         container_name: task_tracker_app
         depends_on:
             - db

@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Services\VisitorCounter;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -21,6 +22,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        if (app()->isLocal() && Cookie::has('XDEBUG_SESSION')) {
+            Cookie::queue('XDEBUG_SESSION', 1);
+        }
     }
 }

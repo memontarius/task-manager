@@ -15,6 +15,7 @@ endif
 DOCKER_FILE=docker-compose$(DOCKER_FILE_PREFIX).yml
 
 cnn=task_tracker_app # Container name
+sn=app #Service name
 c= # Class name
 
 # _____________ Setup _____________
@@ -34,8 +35,17 @@ setup:
 
 # _____________ Docker _____________
 
+b:
+	docker-compose --file $(DOCKER_FILE) build
+
+bs:
+	docker-compose --file $(DOCKER_FILE) build $(sn)
+
+upb:
+	docker-compose --file $(DOCKER_FILE) up --build -d
+
 up:
-	docker compose --file $(DOCKER_FILE) up -d
+	docker-compose --file $(DOCKER_FILE) up -d
 
 dw:
 	docker compose --file $(DOCKER_FILE) down
